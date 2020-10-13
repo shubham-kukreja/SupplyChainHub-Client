@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/SupplyChainHub-Client/static/css/main.3abb1a1c.chunk.css",
+    "main.js": "/SupplyChainHub-Client/static/js/main.3be6288b.chunk.js",
+    "main.js.map": "/SupplyChainHub-Client/static/js/main.3be6288b.chunk.js.map",
+    "runtime-main.js": "/SupplyChainHub-Client/static/js/runtime-main.4a7a8015.js",
+    "runtime-main.js.map": "/SupplyChainHub-Client/static/js/runtime-main.4a7a8015.js.map",
+    "static/js/2.44a0050f.chunk.js": "/SupplyChainHub-Client/static/js/2.44a0050f.chunk.js",
+    "static/js/2.44a0050f.chunk.js.map": "/SupplyChainHub-Client/static/js/2.44a0050f.chunk.js.map",
+    "index.html": "/SupplyChainHub-Client/index.html",
+    "precache-manifest.e6f4bd9873c6a0bc92a3a1de68c3350b.js": "/SupplyChainHub-Client/precache-manifest.e6f4bd9873c6a0bc92a3a1de68c3350b.js",
+    "service-worker.js": "/SupplyChainHub-Client/service-worker.js",
+    "static/css/main.3abb1a1c.chunk.css.map": "/SupplyChainHub-Client/static/css/main.3abb1a1c.chunk.css.map",
+    "static/js/2.44a0050f.chunk.js.LICENSE.txt": "/SupplyChainHub-Client/static/js/2.44a0050f.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.4a7a8015.js",
+    "static/js/2.44a0050f.chunk.js",
+    "static/css/main.3abb1a1c.chunk.css",
+    "static/js/main.3be6288b.chunk.js"
+  ]
+}
