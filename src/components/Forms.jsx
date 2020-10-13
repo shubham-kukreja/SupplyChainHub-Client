@@ -1,9 +1,14 @@
 import {
   Button,
+  Checkbox,
   Container,
   FormControl,
-  InputAdornment,
+  FormControlLabel,
   InputLabel,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Paper,
   Typography,
 } from "@material-ui/core";
 import Dialog from "@material-ui/core/Dialog";
@@ -18,8 +23,9 @@ import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import AddIcon from "@material-ui/icons/Add";
 import DeleteIcon from "@material-ui/icons/Delete";
-import React, { useState } from "react";
 import { motion } from "framer-motion";
+import React, { useState } from "react";
+import { code } from "../constants/sampleCode/supplyChain";
 import RoleBlock from "./RoleBlock";
 
 const useStyles = makeStyles((theme) => ({
@@ -46,6 +52,41 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: theme.spacing(5),
     paddingBottom: theme.spacing(5),
     textAlign: "center",
+  },
+  container: {
+    minHeight: "55vh",
+  },
+  deployContainer: {
+    display: "flex",
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    alignItems: "center",
+    height: "55vh",
+    width: "100%",
+  },
+  codebox: {
+    flex: 1,
+    height: "100%",
+    backgroundColor: "#FCFCFC",
+    overflowY: "scroll",
+  },
+
+  codeboxHeading: {
+    backgroundColor: "#E7E7E7",
+    padding: theme.spacing(2),
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  content: {
+    paddingLeft: theme.spacing(5),
+  },
+
+  detailContainer: {
+    padding: theme.spacing(5),
+    backgroundColor: theme.palette.primary.main,
+    color: "white",
   },
 }));
 
@@ -94,10 +135,7 @@ export function YourDetails() {
 export function ProductDetails() {
   const classes = useStyles();
   const [category, setCategory] = React.useState("");
-  //   const [state, setState] = React.useState({
-  //     trackwithlot: true,
-  //     trackwithproduct: true,
-  //   });
+
   const [productArgs, setProductArgs] = useState([]);
   const [open, setOpen] = React.useState(false);
   const [propertyName, setPropertyName] = useState("");
@@ -174,51 +212,18 @@ export function ProductDetails() {
               <MenuItem value={30}>Other</MenuItem>
             </Select>
           </FormControl>
-          {/* <div>
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={state.checkedB}
-                onChange={handleChangeCheckbox}
-                name="trackwithlot"
-                color="primary"
-              />
-            }
-            label="Track With Lot ID - Less Gas Consumption"
-          />
-          <br />
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={state.checkedB}
-                onChange={handleChangeCheckbox}
-                name="trackwithproduct"
-                color="primary"
-              />
-            }
-            label="Track With Product ID - More Gas Consumption"
-          />
-        </div> */}
+
           {productArgs.map((item, index) => (
-            <TextField
-              key={index}
-              label={item.name}
-              variant="filled"
-              autoFocus
-              disabled
-              color="primary"
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <DeleteIcon
-                      color="error"
-                      cursor="pointer"
-                      onClick={() => deleteProductArg(item)}
-                    />
-                  </InputAdornment>
-                ),
-              }}
-            />
+            <ListItem>
+              <ListItemIcon>
+                <DeleteIcon
+                  color="error"
+                  cursor="pointer"
+                  onClick={() => deleteProductArg(item)}
+                />
+              </ListItemIcon>
+              <ListItemText primary={item.name} secondary={item.type} />
+            </ListItem>
           ))}
         </form>
         <br />
@@ -280,15 +285,13 @@ export function ProductDetails() {
 
 export function SupplyChain() {
   const classes = useStyles();
-  const [roles, setRoles] = useState([
-    "Manufacturer",
-    "Dealer",
-    "Distributor",
-    "Retailer",
-    "Customer",
-  ]);
+  const [roles, setRoles] = useState([]);
   const [open, setOpen] = React.useState(false);
   const [roleName, setRoleName] = useState("");
+  const [state, setState] = React.useState({
+    trackwithlot: false,
+    trackwithproduct: true,
+  });
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -309,9 +312,17 @@ export function SupplyChain() {
     setRoles(newRoles);
   };
 
+  const handleChangeCheckbox = (event) => {
+    setState({ ...state, [event.target.name]: event.target.checked });
+  };
+
   return (
     <div style={{ padding: 20 }}>
-      <motion.div>
+      <motion.div
+        initial={{ y: 100, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5, type: "tween" }}
+      >
         <br />
         <div>
           {roles.length ? (
@@ -321,6 +332,7 @@ export function SupplyChain() {
           )}
         </div>
         <br />
+        <br />
         <div className={classes.xScrollable}>
           {roles.length ? (
             roles.map((role, index) =>
@@ -329,10 +341,18 @@ export function SupplyChain() {
                   key={index}
                   name={role}
                   removeRole={removeRole}
+                  roles={roles}
+                  setRoles={setRoles}
                   lastElement
                 />
               ) : (
-                <RoleBlock key={index} name={role} removeRole={removeRole} />
+                <RoleBlock
+                  key={index}
+                  name={role}
+                  removeRole={removeRole}
+                  setRoles={setRoles}
+                  roles={roles}
+                />
               )
             )
           ) : (
@@ -341,6 +361,33 @@ export function SupplyChain() {
           <br />
           <br />
           <br />
+          <br />
+
+          <div>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={state.trackwithlot}
+                  onChange={handleChangeCheckbox}
+                  name="trackwithlot"
+                  color="primary"
+                />
+              }
+              label="Track With Lot ID "
+            />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={state.trackwithproduct}
+                  onChange={handleChangeCheckbox}
+                  name="trackwithproduct"
+                  color="primary"
+                />
+              }
+              label="Track With Product ID "
+            />
+          </div>
         </div>
         <Dialog
           open={open}
@@ -353,7 +400,7 @@ export function SupplyChain() {
               Manufactuers will have to make sure to add theses customized role
               values while packing products.
             </DialogContentText>
-            <br />
+
             <TextField
               value={roleName}
               onChange={(event) => setRoleName(event.target.value)}
@@ -377,20 +424,64 @@ export function SupplyChain() {
 }
 
 export function Deployment() {
+  const classes = useStyles();
   return (
-    <Container maxWidth="sm">
+    <Container maxWidth="lg">
       <motion.div
         initial={{ y: 100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5, type: "tween" }}
+        className={classes.deployContainer}
       >
-        <div>SupplyChain.sol</div>
-        <div></div>
+        <div className={classes.codebox}>
+          <div className={classes.codeboxHeading}>
+            <Typography>SupplyChain.sol</Typography>
+            <Button
+              className={classes.deployAction}
+              color="primary"
+              variant="contained"
+            >
+              DEPLOY
+            </Button>
+          </div>
+          <div className={classes.content}>
+            <pre>{code}</pre>
+          </div>
+        </div>
       </motion.div>
     </Container>
   );
 }
 
 export function Completed() {
-  return <div>Completed</div>;
+  const classes = useStyles();
+  return (
+    <motion.div
+      initial={{ y: 100, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.5, type: "tween" }}
+    >
+      <Container maxWidth="md">
+        <div className={classes.container}>
+          <br />
+          <Paper square className={classes.detailContainer} elevation={5}>
+            <Typography variant="h3">Contract Address</Typography>
+            <Typography variant="h6">
+              0xfab9f7a5615a4fa7da0b8e669b076dc62b545e86
+            </Typography>
+            <br />
+            <Typography variant="h3">Transaction Hash</Typography>
+            <Typography variant="h6">
+              0x8b38a6d785f3ba2784a322b33e6fcc9932458429aeaff88cbe03ac4625ffedfc
+            </Typography>
+            <br />
+            <Typography variant="h3">Owner</Typography>
+            <Typography variant="h6">
+              0x2114107ddd2c0bb7a174dda0245d0052618c1c28
+            </Typography>
+          </Paper>
+        </div>
+      </Container>
+    </motion.div>
+  );
 }

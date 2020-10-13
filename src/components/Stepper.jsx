@@ -12,6 +12,8 @@ import {
   SupplyChain,
   YourDetails,
 } from "./Forms";
+import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
+import ArrowBack from "@material-ui/icons/ArrowBack";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -43,7 +45,6 @@ function getSteps() {
     "Product Details",
     "Customize Supply Chain",
     "Deploy Smart Contract",
-    "Finish",
   ];
 }
 
@@ -57,8 +58,6 @@ function getStepContent(stepIndex) {
       return <SupplyChain />;
     case 3:
       return <Deployment />;
-    case 4:
-      return <Completed />;
     default:
       return "Please go to Your Details";
   }
@@ -66,7 +65,7 @@ function getStepContent(stepIndex) {
 
 export default function HorizontalLabelPositionBelowStepper() {
   const classes = useStyles();
-  const [activeStep, setActiveStep] = React.useState(2);
+  const [activeStep, setActiveStep] = React.useState(0);
   const steps = getSteps();
 
   const handleNext = () => {
@@ -93,10 +92,17 @@ export default function HorizontalLabelPositionBelowStepper() {
       <div>
         {activeStep === steps.length ? (
           <div>
-            <Typography className={classes.instructions}>
-              All steps completed
-            </Typography>
-            <Button onClick={handleReset}>Reset</Button>
+            <Completed />
+            <div className={classes.floatRight}>
+              <Button
+                disabled={activeStep === 0}
+                onClick={handleBack}
+                startIcon={<ArrowBack color="primary" />}
+                className={classes.backButton}
+              >
+                Back
+              </Button>
+            </div>
           </div>
         ) : (
           <div>
@@ -105,11 +111,17 @@ export default function HorizontalLabelPositionBelowStepper() {
               <Button
                 disabled={activeStep === 0}
                 onClick={handleBack}
+                startIcon={<ArrowBack color="primary" />}
                 className={classes.backButton}
               >
                 Back
               </Button>
-              <Button variant="contained" color="primary" onClick={handleNext}>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleNext}
+                endIcon={<ArrowForwardIcon />}
+              >
                 {activeStep === steps.length - 1 ? "Finish" : "Next"}
               </Button>
             </div>

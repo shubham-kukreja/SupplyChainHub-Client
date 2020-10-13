@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap");
 body {
   margin: 0;
   font-family: "Poppins", sans-serif !important;
@@ -16,7 +16,7 @@ html {
   overflow-x: hidden;
 }
 ::-webkit-scrollbar {
-  width: 0px;
+  width: 5px;
   height: 5px;
   border-radius: 20px; /* Remove scrollbar space */
   background: white; /* Optional: just make scrollbar invisible */

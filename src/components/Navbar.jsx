@@ -37,7 +37,7 @@ export default function Navbar() {
           <Typography variant="h6" className={classes.title}>
             Supply Chain Hub
           </Typography>
-          <Button color="inherit">Shubham Kukreja</Button>
+          <Button color="inherit">Login</Button>
         </Toolbar>
       </AppBar>
     </div>

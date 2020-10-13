@@ -1,0 +1,12 @@
+.landing-container {
+  background-color: #2196f3;
+  height: 100%;
+  width: 100%;
+}
+.heading {
+  font-weight: 800;
+  color: white;
+}
+.sub-heading {
+  color: white;
+}

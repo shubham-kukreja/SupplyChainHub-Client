@@ -1,26 +1,18 @@
 import React from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
-import AddProductPage from "./pages/AddProductPage";
-import BuildSupplyChain from "./pages/BuildSupplyChain";
 import CreatePage from "./pages/CreatePage";
-import DeployContractPage from "./pages/DeployContractPage";
+import HomePage from "./pages/HomePage";
 
 const Routes = () => {
   return (
     <Switch>
-      <Route path="/" exact>
-        <CreatePage />
+      <Route path="/home" exact>
+        <HomePage />
       </Route>
       <Route path="/build" exact>
-        <BuildSupplyChain />
+        <CreatePage />
       </Route>
-      <Route path="/product" exact>
-        <AddProductPage />
-      </Route>
-      <Route path="/deploy" exact>
-        <DeployContractPage />
-      </Route>
-      <Redirect to="/" />
+      <Redirect to="/home" />
     </Switch>
   );
 };
