@@ -34,6 +34,21 @@ function HomePage() {
             Get Started
           </Button>
         </Link>
+
+        <Link to="/chat" style={{ textDecoration: "none", color: "#2196f3" }}>
+          <Button
+            variant="contained"
+            endIcon={<ArrowForwardIcon color="primary" />}
+            style={{
+              backgroundColor: "white",
+              color: "#2196f3",
+              borderRadius: 20,
+              padding: "0.5rem 1.5rem",
+            }}
+          >
+            Chat with Others
+          </Button>
+        </Link>
         <br />
         <br />
         <br />

@@ -27,6 +27,7 @@ import { motion } from "framer-motion";
 import React, { useState } from "react";
 import { code } from "../constants/sampleCode/supplyChain";
 import RoleBlock from "./RoleBlock";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -316,6 +317,14 @@ export function SupplyChain() {
     setState({ ...state, [event.target.name]: event.target.checked });
   };
 
+  const callApi = async () => {
+    const res = await axios.post("http://127.0.0.1:5000/createcontracts", {
+      name: "Shubham",
+      role: roles,
+    });
+    console.log(res.data);
+  };
+
   return (
     <div style={{ padding: 20 }}>
       <motion.div
@@ -389,6 +398,7 @@ export function SupplyChain() {
             />
           </div>
         </div>
+        <Button onClick={callApi}>CALL API</Button>
         <Dialog
           open={open}
           onClose={handleClose}

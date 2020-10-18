@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Navbar() {
+export default function Navbar(props) {
   const classes = useStyles();
 
   return (
@@ -37,7 +37,7 @@ export default function Navbar() {
           <Typography variant="h6" className={classes.title}>
             Supply Chain Hub
           </Typography>
-          <Button color="inherit">Login</Button>
+          <Button color="inherit">{props.accountAddress}</Button>
         </Toolbar>
       </AppBar>
     </div>
