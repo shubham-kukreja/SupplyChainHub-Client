@@ -3,7 +3,8 @@ import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
 import Stepper from "@material-ui/core/Stepper";
 import { makeStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
+import ArrowBack from "@material-ui/icons/ArrowBack";
+import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
 import React from "react";
 import {
   Completed,
@@ -11,9 +12,8 @@ import {
   ProductDetails,
   SupplyChain,
   YourDetails,
+  SelectBox,
 } from "./Forms";
-import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
-import ArrowBack from "@material-ui/icons/ArrowBack";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -43,6 +43,7 @@ function getSteps() {
   return [
     "Your Details",
     "Product Details",
+    "Customize Types",
     "Customize Supply Chain",
     "Deploy Smart Contract",
   ];
@@ -55,17 +56,22 @@ function getStepContent(stepIndex) {
     case 1:
       return <ProductDetails />;
     case 2:
-      return <SupplyChain />;
+      return <SelectBox />;
     case 3:
+      return <SupplyChain />;
+    case 4:
       return <Deployment />;
     default:
       return "Please go to Your Details";
   }
 }
 
-export default function HorizontalLabelPositionBelowStepper() {
+export default function HorizontalLabelPositionBelowStepper({
+  activeStep,
+  setActiveStep,
+}) {
   const classes = useStyles();
-  const [activeStep, setActiveStep] = React.useState(0);
+
   const steps = getSteps();
 
   const handleNext = () => {
@@ -76,12 +82,9 @@ export default function HorizontalLabelPositionBelowStepper() {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
-  const handleReset = () => {
-    setActiveStep(0);
-  };
-
   return (
     <div className={classes.root}>
+      <br />
       <Stepper activeStep={activeStep} alternativeLabel>
         {steps.map((label) => (
           <Step key={label}>

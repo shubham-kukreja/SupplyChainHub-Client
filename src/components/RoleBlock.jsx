@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
     paddingRight: theme.spacing(4),
     paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(2),
-    backgroundColor: "white",
+    backgroundColor: theme.palette.background.paper,
     border: `2px solid ${theme.palette.primary.main}`,
     color: theme.palette.primary.main,
     boxShadow: "0 5px 20px rgba(0,0,0,.16)",

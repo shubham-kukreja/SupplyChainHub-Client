@@ -1,8 +1,11 @@
 import React from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import ChatPage from "./pages/ChatPage";
+import ChoosePage from "./pages/ChoosePage";
 import CreatePage from "./pages/CreatePage";
 import HomePage from "./pages/HomePage";
+import InteractPage from "./pages/InteractPage";
+import Join from "./components/ChatComponents/Join/Join";
 
 const Routes = () => {
   return (
@@ -15,6 +18,15 @@ const Routes = () => {
       </Route>
       <Route path="/chat" exact>
         <ChatPage />
+      </Route>
+      <Route path="/joinchat" exact>
+        <Join />
+      </Route>
+      <Route path="/join" exact>
+        <InteractPage />
+      </Route>
+      <Route path="/choose" exact>
+        <ChoosePage />
       </Route>
       <Redirect to="/home" />
     </Switch>

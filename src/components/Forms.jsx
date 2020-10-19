@@ -9,8 +9,10 @@ import {
   ListItemIcon,
   ListItemText,
   Paper,
+  Slide,
   Typography,
 } from "@material-ui/core";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -22,12 +24,15 @@ import Select from "@material-ui/core/Select";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import AddIcon from "@material-ui/icons/Add";
+import CheckIcon from "@material-ui/icons/Check";
+import CachedIcon from "@material-ui/icons/Cached";
+
 import DeleteIcon from "@material-ui/icons/Delete";
-import { motion } from "framer-motion";
-import React, { useState } from "react";
-import { code } from "../constants/sampleCode/supplyChain";
-import RoleBlock from "./RoleBlock";
 import axios from "axios";
+import { motion } from "framer-motion";
+import React, { useEffect, useState } from "react";
+import firebase from "../firebase";
+import RoleBlock from "./RoleBlock";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -69,16 +74,18 @@ const useStyles = makeStyles((theme) => ({
   codebox: {
     flex: 1,
     height: "100%",
-    backgroundColor: "#FCFCFC",
+    backgroundColor: "#202225",
     overflowY: "scroll",
+    color: "white",
   },
 
   codeboxHeading: {
-    backgroundColor: "#E7E7E7",
+    backgroundColor: "#121418",
     padding: theme.spacing(2),
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
+    color: "white",
   },
   content: {
     paddingLeft: theme.spacing(5),
@@ -89,10 +96,18 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.primary.main,
     color: "white",
   },
+  compiled: {
+    backgroundColor: "#4BB543",
+    color: "white",
+  },
 }));
 
 export function YourDetails() {
   const classes = useStyles();
+  const [name, setName] = useState("");
+  const [company_name, setCompany_name] = useState("");
+  const [address, setAddress] = useState("");
+
   return (
     <Container maxWidth="sm">
       <motion.div
@@ -113,12 +128,22 @@ export function YourDetails() {
             variant="outlined"
             required
             autoFocus
+            value={name}
+            onChange={(e) => {
+              setName(e.target.value);
+              localStorage.setItem("owner_name", e.target.value);
+            }}
           />
           <TextField
             id="outlined-basic2"
             label="Organisation Name"
             variant="outlined"
             required
+            value={company_name}
+            onChange={(e) => {
+              setCompany_name(e.target.value);
+              localStorage.setItem("company_name", e.target.value);
+            }}
           />
           <TextField
             id="outlined-basic3"
@@ -126,6 +151,11 @@ export function YourDetails() {
             variant="outlined"
             required
             multiline
+            value={address}
+            onChange={(e) => {
+              setAddress(e.target.value);
+              localStorage.setItem("owner_address", e.target.value);
+            }}
           />
         </form>
       </motion.div>
@@ -137,13 +167,19 @@ export function ProductDetails() {
   const classes = useStyles();
   const [category, setCategory] = React.useState("");
 
+  const [productName, setProductName] = useState("");
   const [productArgs, setProductArgs] = useState([]);
   const [open, setOpen] = React.useState(false);
   const [propertyName, setPropertyName] = useState("");
   const [propertyType, setPropertyType] = useState("");
 
+  useEffect(() => {
+    localStorage.setItem("product_args", JSON.stringify(productArgs));
+  }, [productArgs]);
+
   const handleChange = (event) => {
     setCategory(event.target.value);
+    localStorage.setItem("product_category", event.target.value);
   };
 
   const handleTypeChange = (event) => {
@@ -157,6 +193,7 @@ export function ProductDetails() {
     setPropertyName("");
     setPropertyType("");
     setOpen(false);
+    localStorage.setItem("product", productArgs);
   };
 
   const deleteProductArg = (item) => {
@@ -190,6 +227,11 @@ export function ProductDetails() {
 
         <form className={classes.root} noValidate autoComplete="off">
           <TextField
+            onChange={(e) => {
+              setProductName(e.target.value);
+              localStorage.setItem("product_name", productName);
+            }}
+            value={productName}
             id="outlined-basic1"
             label="Product Name"
             variant="outlined"
@@ -208,9 +250,9 @@ export function ProductDetails() {
               <MenuItem value="">
                 <em>None</em>
               </MenuItem>
-              <MenuItem value={10}>Industrial</MenuItem>
-              <MenuItem value={20}>Medical</MenuItem>
-              <MenuItem value={30}>Other</MenuItem>
+              <MenuItem value={"Industrial"}>Industrial</MenuItem>
+              <MenuItem value={"Medical"}>Medical</MenuItem>
+              <MenuItem value={"Other"}>Other</MenuItem>
             </Select>
           </FormControl>
 
@@ -289,10 +331,10 @@ export function SupplyChain() {
   const [roles, setRoles] = useState([]);
   const [open, setOpen] = React.useState(false);
   const [roleName, setRoleName] = useState("");
-  const [state, setState] = React.useState({
-    trackwithlot: false,
-    trackwithproduct: true,
-  });
+
+  useEffect(() => {
+    localStorage.setItem("roles", JSON.stringify(roles));
+  }, [roles]);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -313,18 +355,6 @@ export function SupplyChain() {
     setRoles(newRoles);
   };
 
-  const handleChangeCheckbox = (event) => {
-    setState({ ...state, [event.target.name]: event.target.checked });
-  };
-
-  const callApi = async () => {
-    const res = await axios.post("http://127.0.0.1:5000/createcontracts", {
-      name: "Shubham",
-      role: roles,
-    });
-    console.log(res.data);
-  };
-
   return (
     <div style={{ padding: 20 }}>
       <motion.div
@@ -335,7 +365,7 @@ export function SupplyChain() {
         <br />
         <div>
           {roles.length ? (
-            <RoleBlock blank handleClickOpen={handleClickOpen} />
+            <RoleBlock key="last" blank handleClickOpen={handleClickOpen} />
           ) : (
             <></>
           )}
@@ -365,40 +395,13 @@ export function SupplyChain() {
               )
             )
           ) : (
-            <RoleBlock blank handleClickOpen={handleClickOpen} />
+            <RoleBlock key="last" blank handleClickOpen={handleClickOpen} />
           )}
           <br />
           <br />
           <br />
           <br />
-
-          <div>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={state.trackwithlot}
-                  onChange={handleChangeCheckbox}
-                  name="trackwithlot"
-                  color="primary"
-                />
-              }
-              label="Track With Lot ID "
-            />
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={state.trackwithproduct}
-                  onChange={handleChangeCheckbox}
-                  name="trackwithproduct"
-                  color="primary"
-                />
-              }
-              label="Track With Product ID "
-            />
-          </div>
         </div>
-        <Button onClick={callApi}>CALL API</Button>
         <Dialog
           open={open}
           onClose={handleClose}
@@ -432,9 +435,124 @@ export function SupplyChain() {
     </div>
   );
 }
+const solcjs = require("solc-js");
+const version = "v0.4.25-stable-2018.09.13";
 
-export function Deployment() {
+export function Deployment(props) {
+  const [smartContractCode, setSmartContractCode] = useState("");
+  const [contract, setContract] = useState(null);
+  const [deployed, setDeployed] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [compiling, setCompiling] = useState(false);
+
+  useEffect(() => {
+    let data = {
+      product_name: localStorage.getItem("product_name"),
+      roles: JSON.parse(localStorage.getItem("roles")),
+    };
+    data.roles = ["Owner", ...data.roles, "Customer"];
+    getContract(data);
+  }, []);
+
+  const getContract = async (data) => {
+    axios
+      .post("http://127.0.0.1:5000/createcontracts", {
+        name: data.product_name,
+        role: data.roles,
+        tracking: "lotAndProduct",
+        selfDestruct: false,
+      })
+      .then((res) => {
+        setSmartContractCode(res.data);
+      });
+  };
+
+  const compileCode = async () => {
+    setCompiling(true);
+    const compiler = await solcjs(version);
+    const output = await compiler(smartContractCode);
+    setContract(output[0]);
+    setCompiling(false);
+  };
+
+  const createDoc = async () => {
+    const data = {
+      abi: JSON.stringify(contract.abi),
+    };
+    await firebase
+      .firestore()
+      .collection("Contracts")
+      .doc(localStorage.getItem("deployed_contract"))
+      .set(data);
+  };
+
+  const deployContract = async () => {
+    const web3 = window.web3;
+    const myContract = new web3.eth.Contract(contract.abi);
+    myContract
+      .deploy({
+        data: contract.binary.bytecodes.bytecode,
+        arguments: [
+          localStorage.getItem("company_name"),
+          localStorage.getItem("product_name"),
+          localStorage.getItem("product_category"),
+          localStorage.getItem("owner_name"),
+          "18.92",
+          "73.85",
+        ],
+      })
+      .send(
+        {
+          from: localStorage.getItem("account_address"),
+          gas: 4700000,
+        },
+        (err, res) => {
+          if (err) {
+            console.log(err);
+          }
+          if (res) {
+            setLoading(true);
+            console.log(res);
+
+            setDeployed(true);
+          }
+        }
+      )
+      .on("transactionHash", function (transactionHash) {
+        localStorage.setItem("contract_deployemnt_txHash", transactionHash);
+      })
+      .on("receipt", function (receipt) {
+        console.log(receipt.contractAddress);
+        localStorage.setItem("deployed_contract", receipt.contractAddress); // contains the new contract address
+      })
+      .on("confirmation", function (confirmationNumber, receipt) {
+        createDoc();
+        setLoading(false);
+      });
+  };
+
   const classes = useStyles();
+
+  if (loading) {
+    return (
+      <Container
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          color: "white",
+          height: "50vh",
+        }}
+      >
+        <CircularProgress style={{ display: "block" }} />
+        <p style={{ display: "block" }}>
+          Deploying Contract on Matic Mumbai Testnet
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </p>
+      </Container>
+    );
+  }
+
   return (
     <Container maxWidth="lg">
       <motion.div
@@ -446,25 +564,43 @@ export function Deployment() {
         <div className={classes.codebox}>
           <div className={classes.codeboxHeading}>
             <Typography>SupplyChain.sol</Typography>
-            <Button
-              className={classes.deployAction}
-              color="primary"
-              variant="contained"
-            >
-              DEPLOY
-            </Button>
+            <div>
+              <Button
+                className={contract ? classes.compiled : ""}
+                color="primary"
+                variant="contained"
+                onClick={compileCode}
+                endIcon={contract ? <CheckIcon /> : <></>}
+                startIcon={compiling ? <CachedIcon /> : <></>}
+              >
+                {contract ? "Compiled" : "Compile"}
+              </Button>
+              &nbsp;&nbsp;&nbsp;
+              <Button
+                color="primary"
+                variant="contained"
+                className={deployed ? classes.compiled : ""}
+                disabled={!contract}
+                onClick={deployContract}
+                endIcon={deployed ? <CheckIcon /> : <></>}
+              >
+                Deploy
+              </Button>
+            </div>
           </div>
           <div className={classes.content}>
-            <pre>{code}</pre>
+            <pre>{smartContractCode}</pre>
           </div>
         </div>
       </motion.div>
     </Container>
   );
 }
-
 export function Completed() {
   const classes = useStyles();
+
+  useEffect(() => {}, []);
+
   return (
     <motion.div
       initial={{ y: 100, opacity: 0 }}
@@ -477,7 +613,7 @@ export function Completed() {
           <Paper square className={classes.detailContainer} elevation={5}>
             <Typography variant="h3">Contract Address</Typography>
             <Typography variant="h6">
-              0xfab9f7a5615a4fa7da0b8e669b076dc62b545e86
+              {localStorage.getItem("deployed_contract")}
             </Typography>
             <br />
             <Typography variant="h3">Transaction Hash</Typography>
@@ -487,11 +623,73 @@ export function Completed() {
             <br />
             <Typography variant="h3">Owner</Typography>
             <Typography variant="h6">
-              0x2114107ddd2c0bb7a174dda0245d0052618c1c28
+              {localStorage.getItem("account_address")}
             </Typography>
           </Paper>
         </div>
       </Container>
     </motion.div>
+  );
+}
+
+export function SelectBox() {
+  const classes = useStyles();
+  const [state, setState] = useState({
+    trackwithlot: false,
+    trackwithproduct: true,
+  });
+  useEffect(() => {
+    localStorage.setItem("track", JSON.stringify(state));
+  }, [state]);
+  const handleChangeCheckbox = (event) => {
+    setState({ ...state, [event.target.name]: event.target.checked });
+  };
+
+  return (
+    <Container maxWidth="xs">
+      <br />
+      <br />
+
+      <motion.div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          flexDirection: "column",
+        }}
+        initial={{ y: 100, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5, type: "tween" }}
+      >
+        <Typography variant="h4" component="h2">
+          Customization Options
+        </Typography>
+        <br />
+        <br />
+
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={state.trackwithlot}
+              onChange={handleChangeCheckbox}
+              name="trackwithlot"
+              color="primary"
+            />
+          }
+          label="Track With Lot ID "
+        />
+
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={state.trackwithproduct}
+              onChange={handleChangeCheckbox}
+              name="trackwithproduct"
+              color="primary"
+            />
+          }
+          label="Track With Product ID "
+        />
+      </motion.div>
+    </Container>
   );
 }

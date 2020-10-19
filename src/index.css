@@ -19,11 +19,11 @@ html {
   width: 5px;
   height: 5px;
   border-radius: 20px; /* Remove scrollbar space */
-  background: white; /* Optional: just make scrollbar invisible */
+  background: black; /* Optional: just make scrollbar invisible */
 }
 /* Optional: show position indicator in red */
 ::-webkit-scrollbar-thumb {
-  background: #2196f3;
+  background: #7e89fd;
   height: 0px;
   width: 0px;
 }

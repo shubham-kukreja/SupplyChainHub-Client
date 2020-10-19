@@ -7,77 +7,63 @@ export const functions = (
   const arrayFirst = [
     {
       name: "makeLot()",
-      desc:
-        "Nulla facilisi. Phasellus sollicitudin nulla et quam mattis feugiat. Aliquam eget maximus est, id dignissim quam.",
+      desc: `Allows ${currentRoleName} to confirm process of making lot of products for the Supply Chain.`,
     },
     {
       name: "packedLot()",
-      desc:
-        "Nulla facilisi. Phasellus sollicitudin nulla et quam mattis feugiat. Aliquam eget maximus est, id dignissim quam.",
+      desc: `Allows ${currentRoleName} to confirm process of packing lot of products for the Supply Chain.`,
     },
     {
       name: `forSaleLotBy${currentRoleName}()`,
-      desc:
-        "Nulla facilisi. Phasellus sollicitudin nulla et quam mattis feugiat. Aliquam eget maximus est, id dignissim quam.",
+      desc: `Allows ${currentRoleName} to put lot on sale of making lot of products for the Supply Chain.`,
     },
     {
       name: `sellLotTo${nextRoleName}()`,
-      desc:
-        "Nulla facilisi. Phasellus sollicitudin nulla et quam mattis feugiat. Aliquam eget maximus est, id dignissim quam.",
+      desc: `Allows ${currentRoleName} to put lot on sale of making lot of products for the Supply Chain.`,
     },
     {
       name: `shipLotFrom${currentRoleName}To${nextRoleName}()`,
-      desc:
-        "Nulla facilisi. Phasellus sollicitudin nulla et quam mattis feugiat. Aliquam eget maximus est, id dignissim quam.",
+      desc: `Allows ${currentRoleName} to put lot on sale of making lot of products for the Supply Chain.`,
     },
     {
       name: `add${nextRoleName}()`,
-      desc:
-        "Nulla facilisi. Phasellus sollicitudin nulla et quam mattis feugiat. Aliquam eget maximus est, id dignissim quam.",
+      desc: `Allows ${currentRoleName} to put lot on sale of making lot of products for the Supply Chain.`,
     },
   ];
   const arrayMiddle = [
     {
       name: `payFrom${currentRoleName}To${previousRoleName}()`,
-      desc:
-        "Nulla facilisi. Phasellus sollicitudin nulla et quam mattis feugiat. Aliquam eget maximus est, id dignissim quam.",
+      desc: `Allows ${currentRoleName} to put lot on sale of making lot of products for the Supply Chain.`,
     },
     {
       name: `receivedBy${currentRoleName}()`,
-      desc:
-        "Nulla facilisi. Phasellus sollicitudin nulla et quam mattis feugiat. Aliquam eget maximus est, id dignissim quam.",
+      desc: `Allows ${currentRoleName} to put lot on sale of making lot of products for the Supply Chain.`,
     },
     {
       name: `forSaleLotBy${currentRoleName}()`,
-      desc:
-        "Nulla facilisi. Phasellus sollicitudin nulla et quam mattis feugiat. Aliquam eget maximus est, id dignissim quam.",
+      desc: `Allows ${currentRoleName} to put lot on sale of making lot of products for the Supply Chain.`,
     },
     {
       name: `sellLotTo${nextRoleName}()`,
-      desc:
-        "Nulla facilisi. Phasellus sollicitudin nulla et quam mattis feugiat. Aliquam eget maximus est, id dignissim quam.",
+      desc: `Allows ${currentRoleName} to put lot on sale of making lot of products for the Supply Chain.`,
     },
     {
       name: `shipLotFrom${currentRoleName}To${nextRoleName}()`,
-      desc:
-        "Nulla facilisi. Phasellus sollicitudin nulla et quam mattis feugiat. Aliquam eget maximus est, id dignissim quam.",
+      desc: `Allows ${currentRoleName} to put lot on sale of making lot of products for the Supply Chain.`,
     },
     {
       name: `add${nextRoleName}()`,
-      desc:
-        "Nulla facilisi. Phasellus sollicitudin nulla et quam mattis feugiat. Aliquam eget maximus est, id dignissim quam.",
+      desc: `Allows ${currentRoleName} to put lot on sale of making lot of products for the Supply Chain.`,
     },
   ];
   const arrayLast = [
     {
       name: `payFrom${currentRoleName}To${previousRoleName}()`,
-      desc:
-        "Nulla facilisi. Phasellus sollicitudin nulla et quam mattis feugiat. Aliquam eget maximus est, id dignissim quam.",
+      desc: `Allows ${currentRoleName} to put lot on sale of making lot of products for the Supply Chain.`,
     },
     {
       name: `receivedBy${currentRoleName}()`,
-      desc:
-        "Nulla facilisi. Phasellus sollicitudin nulla et quam mattis feugiat. Aliquam eget maximus est, id dignissim quam.",
+      desc: `Allows ${currentRoleName} to put lot on sale of making lot of products for the Supply Chain.`,
     },
   ];
 
